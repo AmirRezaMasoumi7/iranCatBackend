@@ -1,0 +1,53 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: iran-cat-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: iran_cat
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d iran_cat"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  minio:
+    image: minio/minio:latest
+    container_name: iran-cat-minio
+    restart: unless-stopped
+    ports:
+      # Host ports 19000/19001 avoid Windows Hyper-V excluded ranges that often block 9000/9001
+      - "19000:9000"
+      - "19001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+
+  minio-init:
+    image: minio/mc:latest
+    container_name: iran-cat-minio-init
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      until mc alias set local http://minio:9000 minioadmin minioadmin; do
+        echo 'Waiting for MinIO...';
+        sleep 2;
+      done;
+      mc mb local/iran-cat --ignore-existing;
+      mc anonymous set download local/iran-cat;
+      exit 0;
+      "
+
+volumes:
+  postgres_data:
+  minio_data:
