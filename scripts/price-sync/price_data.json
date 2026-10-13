@@ -1,0 +1,22 @@
+[
+  {
+    "name": "USD",
+    "price": 150000
+  },
+  {
+    "name": "damping",
+    "price": 0.2
+  },
+  {
+    "name": "palladium",
+    "price": 70
+  },
+  {
+    "name": "platinum",
+    "price": 100
+  },
+  {
+    "name": "rhodium",
+    "price": 400
+  }
+]

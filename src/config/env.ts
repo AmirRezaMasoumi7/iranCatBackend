@@ -9,7 +9,7 @@ const envSchema = z.object({
   DATABASE_URL: z.string().url(),
   CORS_ORIGINS: z.string().default("http://localhost:3000"),
   RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(900_000),
-  RATE_LIMIT_MAX: z.coerce.number().int().positive().default(100),
+  RATE_LIMIT_MAX: z.coerce.number().int().positive().default(1000),
   LOG_LEVEL: z
     .enum(["fatal", "error", "warn", "info", "debug", "trace"])
     .default("info"),
@@ -24,7 +24,7 @@ const envSchema = z.object({
   MINIO_SECRET_KEY: z.string().default("minioadmin"),
   MINIO_BUCKET: z.string().default("iran-cat"),
   MINIO_PUBLIC_URL: z.string().url().default("http://localhost:9000/iran-cat"),
-  DAILY_CAT_READ_LIMIT: z.coerce.number().int().positive().default(3),
+  DAILY_CAT_READ_LIMIT: z.coerce.number().int().positive().default(100),
 });
 
 const parsed = envSchema.safeParse(process.env);

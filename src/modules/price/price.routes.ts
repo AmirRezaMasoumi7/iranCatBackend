@@ -6,7 +6,7 @@ import { requireAdmin } from "../../middleware/requireAdmin.js";
 import {
   addPriceSchema,
   bulkEditPriceSchema,
-  editPriceSchema,
+  editPriceSchemaFor,
   nameParamSchema,
 } from "./price.schema.js";
 import {
@@ -60,7 +60,10 @@ router.put(
   "/:name",
   requireAdmin,
   validate(nameParamSchema, "params"),
-  validate(editPriceSchema),
+  (req, res, next) => {
+    const name = typeof req.params.name === "string" ? req.params.name : "";
+    validate(editPriceSchemaFor(name))(req, res, next);
+  },
   asyncHandler(async (req, res) => {
     const { name } = req.params as { name: string };
     const price = await editPrice(name, req.body);
