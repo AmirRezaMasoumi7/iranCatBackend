@@ -38,6 +38,23 @@ export async function listCarBrands(): Promise<string[]> {
   return getSortedCarBrands();
 }
 
+export async function listCarBrandsDistinct(): Promise<string[]> {
+  const rows = await prisma.cat.findMany({
+    where: {
+      AND: [{ carBrand: { not: null } }, { carBrand: { not: "" } }],
+    },
+    distinct: ["carBrand"],
+    select: {
+      carBrand: true,
+    },
+    orderBy: {
+      carBrand: "asc",
+    },
+  });
+
+  return rows.flatMap((row) => (row.carBrand ? [row.carBrand] : []));
+}
+
 export async function listOemCodesByBrand(carBrand: string): Promise<string[]> {
   const cats = await prisma.cat.findMany({
     where: {

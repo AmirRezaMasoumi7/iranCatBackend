@@ -46,6 +46,7 @@ export async function readCat(
       select: {
         oemCode: true,
         carBrand: true,
+        secondaryCode: true,
         description: true,
         weightGram: true,
         palladiumPpm: true,

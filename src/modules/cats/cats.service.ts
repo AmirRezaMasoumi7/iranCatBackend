@@ -18,6 +18,7 @@ const catImageSelect = {
 const catWithImagesSelect = {
   oemCode: true,
   carBrand: true,
+  secondaryCode: true,
   description: true,
   weightGram: true,
   palladiumPpm: true,
@@ -41,6 +42,7 @@ export type CatImageItem = {
 export type CatWithImages = {
   oemCode: string;
   carBrand: string | null;
+  secondaryCode: string | null;
   description: string | null;
   weightGram: Prisma.Decimal | null;
   palladiumPpm: Prisma.Decimal | null;
@@ -54,6 +56,7 @@ export type CatWithImages = {
 export type CatApiItem = {
   oem_code: string;
   car_brand: string | null;
+  secondary_code: string | null;
   description: string | null;
   weight_gram: number | null;
   palladium_ppm: number | null;
@@ -70,6 +73,7 @@ export function toCatApiResponse(cat: CatWithImages): CatApiItem {
   return {
     oem_code: cat.oemCode,
     car_brand: cat.carBrand,
+    secondary_code: cat.secondaryCode,
     description: cat.description,
     weight_gram: decimalToNumber(cat.weightGram),
     palladium_ppm: decimalToNumber(cat.palladiumPpm),
@@ -84,6 +88,10 @@ function toEditCatData(input: EditCatBodyInput): Prisma.CatUpdateInput {
 
   if (input.car_brand !== undefined) {
     data.carBrand = input.car_brand;
+  }
+
+  if (input.secondary_code !== undefined) {
+    data.secondaryCode = input.secondary_code;
   }
 
   if (input.description !== undefined) {
@@ -112,6 +120,7 @@ function toCatCreateData(input: AddCatBodyInput) {
   return {
     oemCode: input.oem_code,
     carBrand: input.car_brand ?? null,
+    secondaryCode: input.secondary_code ?? null,
     description: input.description ?? null,
     weightGram: input.weight_gram ?? null,
     palladiumPpm: input.palladium_ppm ?? null,

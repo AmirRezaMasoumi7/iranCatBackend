@@ -27,9 +27,15 @@ export const oemCodeParamSchema = z.object({
 
 export type OemCodeParam = z.infer<typeof oemCodeParamSchema>;
 
+const optionalSecondaryCode = z.preprocess(
+  emptyToUndefined,
+  z.string().trim().max(100).optional(),
+);
+
 export const addCatBodySchema = z.object({
   oem_code: z.string().trim().min(1, "OEM code is required").max(50),
   car_brand: optionalCarBrand,
+  secondary_code: optionalSecondaryCode,
   description: z.preprocess(emptyToUndefined, z.string().trim().optional()),
   weight_gram: optionalDecimal,
   palladium_ppm: optionalDecimal,
@@ -41,6 +47,7 @@ export type AddCatBodyInput = z.infer<typeof addCatBodySchema>;
 
 export const editCatBodySchema = z.object({
   car_brand: optionalCarBrand,
+  secondary_code: optionalSecondaryCode,
   description: z.preprocess(emptyToUndefined, z.string().trim().optional()),
   weight_gram: optionalDecimal,
   palladium_ppm: optionalDecimal,

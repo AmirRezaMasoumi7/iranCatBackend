@@ -44,9 +44,10 @@ model UserLoginLog {
 }
 
 model Cat {
-  oemCode      String     @id @map("oem_code") @db.VarChar(50)
-  carBrand     String?    @map("car_brand") @db.VarChar(100)
-  description  String?    @db.Text
+  oemCode       String     @id @map("oem_code") @db.VarChar(50)
+  carBrand      String?    @map("car_brand") @db.VarChar(100)
+  secondaryCode String?    @map("secondary_code") @db.VarChar(100)
+  description   String?    @db.Text
   weightGram   Decimal?   @map("weight_gram") @db.Decimal(10, 2)
   palladiumPpm Decimal?   @map("palladium_ppm") @db.Decimal(10, 2)
   platinumPpm  Decimal?   @map("platinum_ppm") @db.Decimal(10, 2)
